@@ -2,17 +2,17 @@
 
 use std::collections::LinkedList as List;
 
-struct BlockChain {
+pub struct BlockChain {
     blocks: List<Block>
 }
 
-struct Block {
-    hash: String,
-    id: u128,
-    transactions: List<Transaction>,
+pub struct Block {
+    pub hash: String,
+    pub id: u128,
+    pub transactions: List<Transaction>,
 }
 
-struct Transaction {
+pub struct Transaction {
     inputs: List<TxIn>,
     outputs: List<TxOut>,
     txid: String,
@@ -32,5 +32,24 @@ struct TxOut {
     // so u64 is enough to store all valid satoshis
 }
 
+impl BlockChain {
+    pub fn new() -> Self {
+        BlockChain {
+            blocks: List::new(), 
+        }
+    }
+
+    pub fn add_block(&mut self, block: Block) {
+        self.blocks.push_back(block); 
+    }
+
+    pub fn get_block_by_id(&self, id:u128) -> Option<&Block> {
+        self.blocks.iter().find(|&block| block.id == id)
+    }
+
+    pub fn get_block_by_hash(&self, hash: &str) -> Option<&Block> {
+        self.blocks.iter().find(|&block| block.hash == hash)
+    }
+}
 // Try to include bitcoin related functionalities like serialization, computing addresses etc.,
 // You can add your own methods for different types and associated unit tests
